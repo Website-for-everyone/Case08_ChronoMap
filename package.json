@@ -1,0 +1,13 @@
+{
+  "name": "chronomap",
+  "version": "1.0.0",
+  "description": "Interactive 3D History Globe, 5000-Year Timeline & AI Historian",
+  "main": "web/app.js",
+  "scripts": {
+    "start": "python api/server.py",
+    "test": "pytest tests/ -v"
+  },
+  "keywords": ["3d-globe", "history", "timeline", "threejs", "ai-historian", "telegram-bot"],
+  "author": "Daniel Idrisov (@Idrisov_prod)",
+  "license": "MIT"
+}

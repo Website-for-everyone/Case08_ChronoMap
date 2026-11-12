@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChronoMap // 3D Interactive History Globe</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Starfield Canvas Background -->
+  <canvas id="starsCanvas" class="stars-layer"></canvas>
+
+  <div class="app-container">
+    <!-- Top Historical Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <span class="gold-crest">✦</span>
+        <h1 class="header-title">CHRONOMAP 3D</h1>
+        <span class="epoch-badge" id="currentEpochBadge">CLASSICAL ANTIQUITY</span>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item"><span class="lbl">ACTIVE EPOCH</span><strong class="val" id="dispYear">44 BCE</strong></div>
+        <div class="stat-item"><span class="lbl">RECORDED EVENTS</span><strong class="val" id="dispEventCount">24 PINS</strong></div>
+        <div class="stat-item"><span class="lbl">CORE</span><strong class="val text-gold">3D-GLOBE ENGINE</strong></div>
+      </div>
+    </header>
+
+    <!-- Main Viewport: Globe + Overlays -->
+    <main class="globe-viewport" id="globeViewport">
+      <!-- 3D Globe Canvas -->
+      <canvas id="globeCanvas"></canvas>
+
+      <!-- Globe Control Floating Bar -->
+      <div class="globe-floating-controls">
+        <button class="globe-btn" id="btnAutoRotate" title="Toggle Auto-Rotation">⟳ ROTATE</button>
+        <button class="globe-btn" id="btnZoomIn" title="Zoom In">+</button>
+        <button class="globe-btn" id="btnZoomOut" title="Zoom Out">-</button>
+        <button class="globe-btn" id="btnResetView" title="Reset Camera">RESET</button>
+      </div>
+
+      <!-- Historical Event Detail Card (Floating) -->
+      <div class="event-floating-card hidden" id="eventCard">
+        <button class="card-close" id="btnCloseCard">×</button>
+        <div class="card-tag" id="cardEpoch">ANTIQUITY // ROME</div>
+        <h3 class="card-title" id="cardTitle">Убийство Юлия Цезаря</h3>
+        <div class="card-meta">
+          <span id="cardYear">44 BCE</span> • <span id="cardLoc">Рим, Италия (41.9° N, 12.5° E)</span>
+        </div>
+        <p class="card-desc" id="cardDesc">
+          В мартовские иды в курии театра Помпея группа сенаторов во главе с Брутом и Кассием совершила покушение на диктатора, положив конец Римской республике.
+        </p>
+        <button class="btn-ask-historian" id="btnAskAboutEvent">СПРОСИТЬ AI-ИСТОРИКА ОБ ЭТОМ</button>
+      </div>
+
+      <!-- AI Historian Sliding Panel -->
+      <aside class="ai-historian-panel" id="historianPanel">
+        <div class="historian-header">
+          <div class="header-info">
+            <span class="ai-avatar">🏛</span>
+            <div>
+              <h3>AI-ИСТОРИК</h3>
+              <p>Контекст: <span id="chatContextYear">44 BCE</span></p>
+            </div>
+          </div>
+          <button class="panel-toggle" id="btnToggleHistorian">◀</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg msg-ai">
+            Приветствую, исследователь! Я синхронизирован с текущей временной эпохой. 
+            Задайте вопрос о правителях, войнах, культуре или торговых путях этого периода.
+          </div>
+        </div>
+
+        <div class="quick-questions">
+          <button class="quick-btn" data-q="Кто был главным правителем в эту эпоху?">👑 Правители</button>
+          <button class="quick-btn" data-q="Какие ключевые торговые пути существовали?">🐪 Торговля</button>
+          <button class="quick-btn" data-q="Какая главная война или битва произошла?">⚔️ Битвы</button>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="chatInput" placeholder="Спросить историка об эпохе..." />
+          <button id="btnSendChat">➤</button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Timeline Bar (5000 Years) -->
+    <footer class="timeline-footer">
+      <!-- Epoch Quick Selectors -->
+      <div class="epoch-pills">
+        <button class="pill" data-year="-2500">БРОНЗОВЫЙ ВЕК (3000–1200 BCE)</button>
+        <button class="pill active" data-year="-44">АНТИЧНОСТЬ (800 BCE–500 CE)</button>
+        <button class="pill" data-year="1240">СРЕДНЕВЕКОВЬЕ (500–1500 CE)</button>
+        <button class="pill" data-year="1520">ВОЗРОЖДЕНИЕ (1400–1750 CE)</button>
+        <button class="pill" data-year="1880">ПРОМЫШЛЕННЫЙ ВЕК (1760–1914 CE)</button>
+        <button class="pill" data-year="2026">НОВЕЙШЕЕ ВРЕМЯ (1914–2026 CE)</button>
+      </div>
+
+      <!-- Continuous Timeline Scrubber -->
+      <div class="timeline-scrubber-box">
+        <div class="scrubber-ticks">
+          <span>3000 BCE</span>
+          <span>2000 BCE</span>
+          <span>1000 BCE</span>
+          <span>0 (н.э.)</span>
+          <span>1000 CE</span>
+          <span>1500 CE</span>
+          <span>1900 CE</span>
+          <span>2026 CE</span>
+        </div>
+        <input type="range" id="timelineSlider" min="-3000" max="2026" value="-44" class="timeline-slider" />
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
