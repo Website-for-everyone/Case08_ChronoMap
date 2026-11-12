@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script>
+(function() {
+  const MOCK_DB = {"/api/events": [{"id": 1, "year": -2560, "lat": 29.97, "lon": 31.13, "name": "Строительство Великой пирамиды в Гизе", "epoch": "Бронзовый век", "loc": "Гиза, Древний Египет", "desc": "Фараон Хеопс воздвиг крупнейшую пирамиду античного мира."}, {"id": 2, "year": -1750, "lat": 32.53, "lon": 44.42, "name": "Свод законов Хаммурапи", "epoch": "Бронзовый век", "loc": "Вавилон, Месопотамия", "desc": "Один из древнейших правовых памятников человечества ('око за око')."}, {"id": 3, "year": -753, "lat": 41.9, "lon": 12.49, "name": "Основание Рима", "epoch": "Античность", "loc": "Лациум, Италия", "desc": "Ромул и Рем основали вечный город на холмах Тибра."}, {"id": 4, "year": -490, "lat": 38.11, "lon": 23.97, "name": "Марафонская битва", "epoch": "Античность", "loc": "Аттика, Древняя Греция", "desc": "Греческие гоплиты разбили персидскую армию Дария I."}, {"id": 5, "year": -331, "lat": 36.36, "lon": 43.25, "name": "Битва при Гавгамелах", "epoch": "Античность", "loc": "Ассирия, Империя Ахеменидов", "desc": "Александр Македонский разбил войско Дария III."}, {"id": 6, "year": -44, "lat": 41.89, "lon": 12.48, "name": "Мартовские иды: Убийство Цезаря", "epoch": "Античность", "loc": "Рим, Римская республика", "desc": "Группа сенаторов во главе с Брутом и Кассием убила Юлия Цезаря."}, {"id": 7, "year": 330, "lat": 41.0, "lon": 28.97, "name": "Основание Константинополя", "epoch": "Античность", "loc": "Босфор, Византия", "desc": "Император Константин Великий основал столицу Византии на Босфоре."}, {"id": 8, "year": 622, "lat": 24.46, "lon": 39.61, "name": "Хиджра Пророка Мухаммада", "epoch": "Средневековье", "loc": "Медина, Аравия", "desc": "Переселение мусульманской общины из Мекки в Медину."}, {"id": 9, "year": 862, "lat": 58.52, "lon": 31.27, "name": "Призвание варягов на Русь", "epoch": "Средневековье", "loc": "Новгород, Древняя Русь", "desc": "Князь Рюрик сел княжить в Новгороде, положив начало династии."}, {"id": 10, "year": 1066, "lat": 50.91, "lon": 0.48, "name": "Битва при Гастингсе", "epoch": "Средневековье", "loc": "Суссекс, Англия", "desc": "Вильгельм Завоеватель начал нормандское завоевание Англии."}, {"id": 11, "year": 1242, "lat": 58.68, "lon": 27.86, "name": "Ледовое побоище", "epoch": "Средневековье", "loc": "Чудское озеро, Русь", "desc": "Александр Невский разбил ливонских рыцарей на льду."}, {"id": 12, "year": 1453, "lat": 41.01, "lon": 28.97, "name": "Падение Константинополя", "epoch": "Возрождение", "loc": "Константинополь, Османская империя", "desc": "Султан Мехмед II Фатих взял штурмом столицу Византии."}, {"id": 13, "year": 1492, "lat": 24.06, "lon": -74.53, "name": "Экспедиция Колумба достигла Америки", "epoch": "Возрождение", "loc": "Багамы, Новый Свет", "desc": "Христофор Колумб открыл путь в Новый Свет."}, {"id": 14, "year": 1703, "lat": 59.93, "lon": 30.31, "name": "Основание Санкт-Петербурга", "epoch": "Возрождение", "loc": "Балтика, Российская империя", "desc": "Петр I заложил Петропавловскую крепость на Неве."}, {"id": 15, "year": 1789, "lat": 48.85, "lon": 2.35, "name": "Взятие Бастилии: Французская революция", "epoch": "Промышленный век", "loc": "Париж, Франция", "desc": "Падение крепости-тюрьмы Бастилии положило начало революции."}, {"id": 16, "year": 1812, "lat": 55.51, "lon": 35.82, "name": "Бородинское сражение", "epoch": "Промышленный век", "loc": "Бородино, Российская империя", "desc": "Крупнейшая битва войны 1812 года между Кутузовым и Наполеоном."}, {"id": 17, "year": 1914, "lat": 43.85, "lon": 18.41, "name": "Сараевское покушение", "epoch": "Новейшее время", "loc": "Сараево, Босния", "desc": "Убийство Франца Фердинанда стало поводом к Первой мировой войне."}, {"id": 18, "year": 1945, "lat": 52.52, "lon": 13.4, "name": "Знамя Победы над Рейхстагом", "epoch": "Новейшее время", "loc": "Берлин, Германия", "desc": "Водружение Знамени Победы ознаменовало разгром нацизма."}, {"id": 19, "year": 1961, "lat": 45.92, "lon": 63.3, "name": "Полет Юрия Гагарина в космос", "epoch": "Новейшее время", "loc": "Байконур, СССР", "desc": "Первый в истории пилотируемый полет на корабле 'Восток-1'."}, {"id": 20, "year": 1969, "lat": 0.67, "lon": 23.47, "name": "Высадка на Луну (Аполлон-11)", "epoch": "Новейшее время", "loc": "Море Спокойствия, Луна", "desc": "Нил Армстронг сделал первый шаг человека по поверхности Луны."}]};
+  const STORAGE_KEY = "idrisov_demo_" + "Case08_ChronoMap";
+  let localState = {};
+  try { localState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch(e) {}
+  function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(localState)); } catch(e) {} }
+
+  const origFetch = window.fetch.bind(window);
+  window.fetch = async function(input, init) {
+    const urlStr = typeof input === "string" ? input : (input && input.url) || "";
+    if (!urlStr.includes("/api/")) {
+      return origFetch(input, init);
+    }
+
+    const method = ((init && init.method) || "GET").toUpperCase();
+    let body = {};
+    if (init && init.body && typeof init.body === "string") {
+      try { body = JSON.parse(init.body); } catch(e) {}
+    }
+
+    const pathOnly = urlStr.split("?")[0];
+    const urlPath = pathOnly.startsWith("http") ? new URL(pathOnly).pathname : pathOnly;
+
+    // 1. Exact GET match from extracted FastAPI TestClient data
+    if (method === "GET") {
+      if (MOCK_DB[urlStr]) return jsonResp(MOCK_DB[urlStr]);
+      if (MOCK_DB[urlPath]) return jsonResp(MOCK_DB[urlPath]);
+      for (const k of Object.keys(MOCK_DB)) {
+        if (k.split("?")[0] === urlPath) return jsonResp(MOCK_DB[k]);
+      }
+      if (urlPath.includes("/api/dataset/") && !MOCK_DB[urlPath]) {
+        const fallbackKey = Object.keys(MOCK_DB).find(k => k.startsWith("/api/dataset/"));
+        if (fallbackKey) return jsonResp(MOCK_DB[fallbackKey]);
+      }
+    }
+
+    // 2. Dynamic Calculators & Interactive Endpoints
+    if (urlPath.endsWith("/calculate")) {
+      const base = Number(body.base_price || body.area || body.days || 1) * 1500 || 4500;
+      const total = Math.max(2500, Math.round(base + (Number(body.weight_kg || 5) * 200)));
+      return jsonResp({
+        status: "ok",
+        total_price: total,
+        price_rub: total,
+        estimated_price: total,
+        duration_minutes: 90,
+        breakdown: { base: Math.round(total * 0.7), extras: Math.round(total * 0.3) },
+        currency: "RUB"
+      });
+    }
+
+    if (urlPath.includes("/estimate")) {
+      return jsonResp({
+        status: "ok",
+        total_rub: 3850000,
+        timeline_weeks: 8,
+        summary: "Смета сформирована (Static Demo Mode)",
+        estimate_id: "EST-" + Math.floor(1000 + Math.random() * 9000)
+      });
+    }
+
+    if (urlPath.includes("/query") || urlPath.includes("/historian/ask")) {
+      const q = body.question || body.query || body.prompt || "Анализ данных";
+      return jsonResp({
+        status: "ok",
+        answer: "Аналитический ответ (Demo AI): по запросу «" + q + "» выявлена устойчивая корреляция (r = 0.78, p < 0.01). Медианные значения находятся в пределах целевого диапазона без критических выбросов.",
+        metrics: [
+          { label: "Медиана", value: "42.8" },
+          { label: "Std Dev", value: "6.14" },
+          { label: "Выбросы", value: "2.1%" }
+        ]
+      });
+    }
+
+    if (urlPath.includes("/quiz/recommend")) {
+      return jsonResp({
+        status: "ok",
+        recommendation: {
+          name: "Ethiopia Yirgacheffe Kochere",
+          origin: "Ethiopia",
+          roast: "Light Filter",
+          notes: ["Бергамот", "Жасмин", "Персик"],
+          match_percent: 96
+        }
+      });
+    }
+
+    if (urlPath.includes("/verify-passcode")) {
+      return jsonResp({ status: "success", unlocked: true, valid: true, message: "VIP ACCESS GRANTED" });
+    }
+
+    if (urlPath.includes("/track-order")) {
+      return jsonResp({
+        status: "success",
+        order_id: urlPath.split("/").pop() || "CR-2026",
+        stage: "Регулировка хода и тест герметичности (Этап 4/5)",
+        master: "Виктор К.",
+        eta: "2 дня"
+      });
+    }
+
+    if (urlPath.includes("/tasks")) {
+      localState.tasks = localState.tasks || (MOCK_DB["/api/tasks"] && MOCK_DB["/api/tasks"].tasks) || [];
+      if (method === "POST" && urlPath.endsWith("/tasks")) {
+        const t = { id: Date.now(), title: body.title || "Новая задача", duration_hours: Number(body.duration_hours || 1), quadrant: body.quadrant || "urgent_important", is_completed: false };
+        localState.tasks.push(t);
+        saveState();
+        return jsonResp({ status: "ok", task: t, tasks: localState.tasks });
+      }
+      if (urlPath.includes("/toggle")) {
+        const id = Number(urlPath.split("/")[3]);
+        localState.tasks = localState.tasks.map(t => t.id === id ? { ...t, is_completed: !t.is_completed } : t);
+        saveState();
+        return jsonResp({ status: "ok", tasks: localState.tasks });
+      }
+      if (method === "DELETE") {
+        const id = Number(urlPath.split("/").pop());
+        localState.tasks = localState.tasks.filter(t => t.id !== id);
+        saveState();
+        return jsonResp({ status: "ok", tasks: localState.tasks });
+      }
+      return jsonResp({ tasks: localState.tasks });
+    }
+
+    if (urlPath === "/api/state") {
+      return jsonResp(MOCK_DB["/api/state"] || {
+        title: "LIVE RAP & TECH BATTLE // FINAL",
+        round: 3,
+        status: "VOTING_OPEN",
+        fighters: [
+          { id: "mc_a", name: "MC NEON", votes: 142, color: "#00f0ff" },
+          { id: "mc_b", name: "BYTE_KILLER", votes: 138, color: "#ff007f" }
+        ]
+      });
+    }
+
+    if (urlPath === "/api/vote") {
+      return jsonResp({ status: "ok", message: "Голос учтен!", voted: true });
+    }
+
+    // Default POST confirmation (bookings, orders, quotes, appraisals, seat reservations)
+    const refId = "ID-" + Math.floor(10000 + Math.random() * 90000);
+    return jsonResp({
+      status: "ok",
+      success: true,
+      id: refId,
+      booking_id: refId,
+      cert_id: refId,
+      voucher: "VIP-" + refId,
+      order_id: refId,
+      message: "Заявка #" + refId + " успешно оформлена и синхронизирована с Telegram-ботом @Idrisov_prod!"
+    });
+  };
+
+  function jsonResp(data) {
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+})();
+</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChronoMap // 3D Interactive History Globe</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Starfield Canvas Background -->
+  <canvas id="starsCanvas" class="stars-layer"></canvas>
+
+  <div class="app-container">
+    <!-- Top Historical Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <span class="gold-crest">✦</span>
+        <h1 class="header-title">CHRONOMAP 3D</h1>
+        <span class="epoch-badge" id="currentEpochBadge">CLASSICAL ANTIQUITY</span>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item"><span class="lbl">ACTIVE EPOCH</span><strong class="val" id="dispYear">44 BCE</strong></div>
+        <div class="stat-item"><span class="lbl">RECORDED EVENTS</span><strong class="val" id="dispEventCount">24 PINS</strong></div>
+        <div class="stat-item"><span class="lbl">CORE</span><strong class="val text-gold">3D-GLOBE ENGINE</strong></div>
+      </div>
+    </header>
+
+    <!-- Main Viewport: Globe + Overlays -->
+    <main class="globe-viewport" id="globeViewport">
+      <!-- 3D Globe Canvas -->
+      <canvas id="globeCanvas"></canvas>
+
+      <!-- Globe Control Floating Bar -->
+      <div class="globe-floating-controls">
+        <button class="globe-btn" id="btnAutoRotate" title="Toggle Auto-Rotation">⟳ ROTATE</button>
+        <button class="globe-btn" id="btnZoomIn" title="Zoom In">+</button>
+        <button class="globe-btn" id="btnZoomOut" title="Zoom Out">-</button>
+        <button class="globe-btn" id="btnResetView" title="Reset Camera">RESET</button>
+      </div>
+
+      <!-- Historical Event Detail Card (Floating) -->
+      <div class="event-floating-card hidden" id="eventCard">
+        <button class="card-close" id="btnCloseCard">×</button>
+        <div class="card-tag" id="cardEpoch">ANTIQUITY // ROME</div>
+        <h3 class="card-title" id="cardTitle">Убийство Юлия Цезаря</h3>
+        <div class="card-meta">
+          <span id="cardYear">44 BCE</span> • <span id="cardLoc">Рим, Италия (41.9° N, 12.5° E)</span>
+        </div>
+        <p class="card-desc" id="cardDesc">
+          В мартовские иды в курии театра Помпея группа сенаторов во главе с Брутом и Кассием совершила покушение на диктатора, положив конец Римской республике.
+        </p>
+        <button class="btn-ask-historian" id="btnAskAboutEvent">СПРОСИТЬ AI-ИСТОРИКА ОБ ЭТОМ</button>
+      </div>
+
+      <!-- AI Historian Sliding Panel -->
+      <aside class="ai-historian-panel" id="historianPanel">
+        <div class="historian-header">
+          <div class="header-info">
+            <span class="ai-avatar">🏛</span>
+            <div>
+              <h3>AI-ИСТОРИК</h3>
+              <p>Контекст: <span id="chatContextYear">44 BCE</span></p>
+            </div>
+          </div>
+          <button class="panel-toggle" id="btnToggleHistorian">◀</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg msg-ai">
+            Приветствую, исследователь! Я синхронизирован с текущей временной эпохой. 
+            Задайте вопрос о правителях, войнах, культуре или торговых путях этого периода.
+          </div>
+        </div>
+
+        <div class="quick-questions">
+          <button class="quick-btn" data-q="Кто был главным правителем в эту эпоху?">👑 Правители</button>
+          <button class="quick-btn" data-q="Какие ключевые торговые пути существовали?">🐪 Торговля</button>
+          <button class="quick-btn" data-q="Какая главная война или битва произошла?">⚔️ Битвы</button>
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="chatInput" placeholder="Спросить историка об эпохе..." />
+          <button id="btnSendChat">➤</button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Timeline Bar (5000 Years) -->
+    <footer class="timeline-footer">
+      <!-- Epoch Quick Selectors -->
+      <div class="epoch-pills">
+        <button class="pill" data-year="-2500">БРОНЗОВЫЙ ВЕК (3000–1200 BCE)</button>
+        <button class="pill active" data-year="-44">АНТИЧНОСТЬ (800 BCE–500 CE)</button>
+        <button class="pill" data-year="1240">СРЕДНЕВЕКОВЬЕ (500–1500 CE)</button>
+        <button class="pill" data-year="1520">ВОЗРОЖДЕНИЕ (1400–1750 CE)</button>
+        <button class="pill" data-year="1880">ПРОМЫШЛЕННЫЙ ВЕК (1760–1914 CE)</button>
+        <button class="pill" data-year="2026">НОВЕЙШЕЕ ВРЕМЯ (1914–2026 CE)</button>
+      </div>
+
+      <!-- Continuous Timeline Scrubber -->
+      <div class="timeline-scrubber-box">
+        <div class="scrubber-ticks">
+          <span>3000 BCE</span>
+          <span>2000 BCE</span>
+          <span>1000 BCE</span>
+          <span>0 (н.э.)</span>
+          <span>1000 CE</span>
+          <span>1500 CE</span>
+          <span>1900 CE</span>
+          <span>2026 CE</span>
+        </div>
+        <input type="range" id="timelineSlider" min="-3000" max="2026" value="-44" class="timeline-slider" />
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
